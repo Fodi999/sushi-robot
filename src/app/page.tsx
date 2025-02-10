@@ -27,7 +27,9 @@ const ChatBot: React.FC = () => {
   useEffect(() => {
     async function fetchProducts() {
       try {
-        const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+        const baseUrl =
+          process.env.NEXT_PUBLIC_API_URL ||
+          "https://fish-botai-ye1g.shuttle.app";
         const res = await fetch(`${baseUrl}/api/sushi-products`);
         if (!res.ok) {
           throw new Error("Failed to fetch sushi products");
@@ -63,7 +65,8 @@ const ChatBot: React.FC = () => {
 
   // Подключение к WebSocket
   useEffect(() => {
-    const wsUrl = process.env.NEXT_PUBLIC_WS_URL || "ws://localhost:8000/ws/";
+    const wsUrl =
+      process.env.NEXT_PUBLIC_WS_URL || "wss://fish-botai-ye1g.shuttle.app/ws/";
     const socket = new WebSocket(wsUrl);
     socketRef.current = socket;
 
@@ -143,16 +146,13 @@ const ChatBot: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-gradient-to-b from-indigo-500 to-teal-400 relative px-4 sm:px-8">
+    <div className="flex flex-col min-h-screen bg-slate-950 text-slate-200 relative px-4 sm:px-8">
       <Header />
       <PushNotificationManager />
       <InstallPrompt />
       <main className="flex-1 p-4 sm:p-8 overflow-y-auto">
         {menuProducts.length > 0 && (
-          <ProductMenu
-            products={menuProducts}
-            onProductClick={setSelectedCard}
-          />
+          <ProductMenu products={menuProducts} onProductClick={setSelectedCard} />
         )}
         <ChatMessages messages={messages} />
       </main>
@@ -176,3 +176,4 @@ const ChatBot: React.FC = () => {
 };
 
 export default ChatBot;
+

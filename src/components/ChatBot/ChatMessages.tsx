@@ -9,10 +9,10 @@ interface ChatMessagesProps {
 
 const ChatMessages: React.FC<ChatMessagesProps> = ({ messages }) => {
   return (
-    <div className="space-y-6">
+    <div className="flex-1 overflow-y-auto p-4 space-y-4">
       {messages.length === 0 ? (
         <div className="flex flex-col items-start">
-          <p className="bg-gradient-to-r from-gray-800 to-gray-900 bg-opacity-60 border border-gray-800 rounded-2xl shadow-lg p-4 sm:p-5 text-gray-100 max-w-md transition-all duration-300 backdrop-blur-xl">
+          <p className="bg-gray-800 border border-gray-300 rounded-lg shadow p-4 text-gray-800 max-w-md">
             Привет! Я SushiBot 😃. Хотите попробовать наши свежие роллы и суши? 🍣
           </p>
         </div>
@@ -20,11 +20,15 @@ const ChatMessages: React.FC<ChatMessagesProps> = ({ messages }) => {
         messages.map((message) => (
           <div
             key={message.id}
-            className={`flex ${message.isBot ? "flex-col items-start" : "justify-end"}`}
+            className={`flex ${message.isBot ? "justify-start" : "justify-end"}`}
           >
-            <p className="bg-gradient-to-r from-gray-800 to-gray-900 bg-opacity-60 border border-gray-800 rounded-2xl shadow-lg p-4 sm:p-5 text-gray-100 max-w-md transition-all duration-300 backdrop-blur-xl">
+            <div
+              className={`max-w-[80%] p-3   rounded-2xl ${
+                message.isBot ? "bg-gray-800 text-gray-200" : "bg-blue-500 text-slate-200"
+              }`}
+            >
               {message.text}
-            </p>
+            </div>
           </div>
         ))
       )}

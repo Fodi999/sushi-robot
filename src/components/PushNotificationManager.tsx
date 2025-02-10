@@ -18,12 +18,18 @@ const PushNotificationManager: React.FC = () => {
   const [isSupported, setIsSupported] = useState(false);
   const [subscription, setSubscription] = useState<PushSubscription | null>(null);
   const [message, setMessage] = useState("");
+  const [isVisible, setIsVisible] = useState(true); // видимость компонента
 
   useEffect(() => {
     if ('serviceWorker' in navigator && 'PushManager' in window) {
       setIsSupported(true);
       registerServiceWorker();
     }
+    // Через 5 секунд скрываем PushNotificationManager
+    const timer = setTimeout(() => {
+      setIsVisible(false);
+    }, 5000);
+    return () => clearTimeout(timer);
   }, []);
 
   async function registerServiceWorker() {
@@ -61,12 +67,15 @@ const PushNotificationManager: React.FC = () => {
     }
   }
 
-  if (!isSupported) {
-    return <p>Push notifications are not supported in this browser.</p>;
+  if (!isSupported || !isVisible) {
+    return null;
   }
 
   return (
-    <div className="p-4 border rounded-lg shadow-md mb-4">
+    <div
+      style={{ animation: "fadeIn 0.5s ease-out" }}
+      className="fixed top-4 left-4 p-4 border rounded-lg shadow-md bg-slate-800 text-slate-200 transition-opacity duration-500"
+    >
       <h3 className="text-lg font-bold mb-2">Push Notifications</h3>
       {subscription ? (
         <>
@@ -82,7 +91,7 @@ const PushNotificationManager: React.FC = () => {
             placeholder="Enter notification message"
             value={message}
             onChange={(e) => setMessage(e.target.value)}
-            className="mt-2 p-2 border rounded-md w-full"
+            className="mt-2 p-2 border rounded-md w-full bg-slate-700 text-slate-200"
           />
           <button
             onClick={sendTestNotification}
