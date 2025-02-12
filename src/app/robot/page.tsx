@@ -1,41 +1,68 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Send, ArrowLeft, MoreHorizontal } from "lucide-react";
 
-export default function ChatPage() {
-  const [messages, setMessages] = useState([
-    {
-      sender: "user",
-      text: "Analyze UX for Job Finder app",
-      avatar: "/user-avatar.png",
-    },
-    {
-      sender: "bot",
-      text: `Key aspects of a job finder app's UX analysis:\n1. Seamless onboarding process\n2. Intuitive search and filtering\n3. Clear and organized job listings\n4. Personalized job recommendations\n5. Easy application process\n6. Communication and collaboration features\n7. User feedback and support options\n8. Accessibility considerations\n9. Performance and speed\n10. Visual design and branding consistency.`,
-      avatar: "/bot-avatar.png",
-    },
-    {
-      sender: "user",
-      text: "Onboarding copy for it",
-      avatar: "/user-avatar.png",
-    },
-    {
-      sender: "bot",
-      text: `Sure, here are some options for onboarding copy for Job Finder App:\n\n• "Welcome! Personalize your job search with a few taps. Let’s find you the perfect fit!"\n• "Let’s customize your job search! Tell us your preferences to find your dream job."\n• "Get started on your job search! Share your job interests and location for personalized recommendations."`,
-      avatar: "/bot-avatar.png",
-    },
-  ]);
+interface Message {
+  sender: string;
+  text: string;
+  avatar: string;
+}
 
+export default function ChatPage() {
+  const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
+  const wsRef = useRef<WebSocket | null>(null);
+
+  useEffect(() => {
+    const socket = new WebSocket("wss://fish-botai-ye1g.shuttle.app/ws/");
+    wsRef.current = socket;
+  
+    socket.onopen = () => {
+      console.log("WebSocket connected");
+    };
+  
+    socket.onmessage = (event) => {
+      const data = event.data;
+      if (typeof data === "string" && (data.trim().startsWith("{") || data.trim().startsWith("["))) {
+        try {
+          const incoming: Message = JSON.parse(data);
+          console.log("Received JSON data:", incoming);
+          setMessages((prev) => [...prev, incoming]);
+        } catch (error) {
+          console.error("Ошибка парсинга JSON сообщения:", error);
+        }
+      } else {
+        console.log("Получено не-JSON сообщение:", data);
+        // При необходимости можно обработать не-JSON данные
+      }
+    };
+  
+    socket.onerror = (err) => {
+      console.error("WebSocket error:", err);
+    };
+  
+    return () => {
+      socket.close();
+    };
+  }, []);
 
   const handleSend = () => {
     if (!input.trim()) return;
-    setMessages([...messages, { sender: "user", text: input, avatar: "/user-avatar.png" }]);
+    const userMessage: Message = { sender: "user", text: input, avatar: "/feis 1.png" };
+    setMessages((prev) => [...prev, userMessage]);
+
+    if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
+      try {
+        wsRef.current.send(JSON.stringify(userMessage));
+      } catch (error) {
+        console.error("Ошибка отправки сообщения:", error);
+      }
+    }
     setInput("");
   };
 
@@ -44,14 +71,17 @@ export default function ChatPage() {
       {/* Header */}
       <div className="p-4 flex items-center bg-[#1C1C1E] shadow-md border-b border-gray-700">
         <button className="mr-4 text-white">
-          <ArrowLeft className="w-6 h-6" 
-          
-          />
+          <ArrowLeft className="w-6 h-6" />
         </button>
         <h1 className="text-lg font-semibold flex-grow text-white">Job Finder UX</h1>
         <button className="text-white">
           <MoreHorizontal className="w-6 h-6" />
         </button>
+      </div>
+
+      {/* Вставленная фотография */}
+      <div className="flex justify-center p-4">
+        <Image src="/feis 1.png" alt="Inserted Photo" width={200} height={200} />
       </div>
 
       {/* Chat messages */}
@@ -74,7 +104,7 @@ export default function ChatPage() {
               <p className="text-sm whitespace-pre-line">{msg.text}</p>
             </div>
             {msg.sender === "user" && (
-              <Image src={msg.avatar} alt="User" width={40} height={40} className="w-10 h-10 rounded-full ml-3" />
+             <Image src="/feis 1.png" alt="Inserted Photo" width={200} height={200} priority />
             )}
           </div>
         ))}
@@ -98,6 +128,7 @@ export default function ChatPage() {
     </div>
   );
 }
+
 
 
 

@@ -4,7 +4,6 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
   // Используем fullName, т.к. бекенд ожидает поле full_name
@@ -12,41 +11,15 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
-  const router = useRouter();
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  // Обработка отправки формы
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const data = {
-      full_name: fullName,
-      password: password,
-    };
-
-    try {
-      const response = await fetch("https://fish-botai-ye1g.shuttle.app/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-      });
-
-      if (!response.ok) {
-        const errorText = await response.text();
-        setError(errorText || "Ошибка логина");
-        setSuccess("");
-      } else {
-        setSuccess("Логин успешный!");
-        setError("");
-        // Переход на страницу dashboard после успешного логина
-        router.push("/dashboard");
-      }
-    } catch (err) {
-      if (err instanceof Error) {
-        setError("Ошибка: " + err.message);
-      } else {
-        setError("Ошибка логина");
-      }
-      setSuccess("");
-    }
+    // Здесь логика отправки через WebSocket удалена.
+    // Можно добавить альтернативную реализацию запроса, например через fetch.
+    setError("WebSocket соединение не установлено");
+    setSuccess("");
   };
 
   return (
@@ -106,4 +79,5 @@ export default function LoginPage() {
     </div>
   );
 }
+
 
