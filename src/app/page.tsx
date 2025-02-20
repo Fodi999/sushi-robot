@@ -8,20 +8,20 @@ import { Lightbulb, Pencil, ShieldAlert } from "lucide-react";
 const features = [
   {
     icon: <Lightbulb size={20} className="text-white" />,
-    text: "Remembers what user said earlier in the conversation",
+    text: "Свежие ингредиенты и аутентичный вкус",
   },
   {
     icon: <Pencil size={20} className="text-white" />,
-    text: "Allows user to provide follow-up corrections",
+    text: "Быстрое оформление заказа онлайн",
   },
   {
     icon: <ShieldAlert size={20} className="text-white" />,
-    text: "Trained to decline inappropriate requests",
+    text: "Гарантия качества и безопасности",
   },
 ];
 
 export default function HomePage() {
-  const router = useRouter(); // инициализация роутера
+  const router = useRouter();
 
   return (
     <div className="relative min-h-screen flex flex-col justify-center items-center bg-gradient-to-b from-black to-gray-900 text-white px-6">
@@ -33,11 +33,11 @@ export default function HomePage() {
 
       {/* Заголовок */}
       <h1 className="text-4xl sm:text-5xl font-bold text-center leading-tight">
-        Explore infinite <br />
-        <span className="text-lime-300">capabilities</span> of writing
+        Доставка суши <br />
+        <span className="text-lime-300">прямо к вашей двери</span>
       </h1>
 
-      {/* Карточки-функции */}
+      {/* Карточки с преимуществами */}
       <div className="mt-10 space-y-4 w-full max-w-md">
         {features.map((feature, index) => (
           <div
@@ -52,24 +52,23 @@ export default function HomePage() {
         ))}
       </div>
 
-      {/* Кнопки */}
+      {/* Кнопки входа и регистрации */}
       <div className="mt-10 flex space-x-4">
         <Button
           variant="outline"
           className="w-32 h-12 rounded-full text-white border-white/30"
           onClick={() => router.push("/login")}
         >
-          Login
+          Вход
         </Button>
         <Button
           className="w-32 h-12 rounded-full bg-white text-black hover:bg-gray-300"
-          onClick={() => router.push("/register")} // Переход на страницу регистрации
+          onClick={() => router.push("/register")}
         >
-          Register
+          Регистрацыя
         </Button>
       </div>
     </div>
   );
 }
-
 
