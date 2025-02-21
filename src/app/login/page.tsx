@@ -4,22 +4,54 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
-  // Используем fullName, т.к. бекенд ожидает поле full_name
+  const router = useRouter();
   const [fullName, setFullName] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
-  // Обработка отправки формы
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    // Здесь логика отправки через WebSocket удалена.
-    // Можно добавить альтернативную реализацию запроса, например через fetch.
-    setError("WebSocket соединение не установлено");
+    setError("");
     setSuccess("");
+
+    try {
+    
+      const response = await fetch("https://go-robot-670748333372.us-central1.run.app/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username: fullName,
+          password: password,
+        }),
+      });
+
+      if (!response.ok) {
+        const errText = await response.text();
+        setError(errText || "Ошибка входа");
+        return;
+      }
+
+      const data = await response.json();
+
+      // Сохраняем данные пользователя для дальнейшей работы
+      localStorage.setItem("user", JSON.stringify(data));
+
+      setSuccess("Вход выполнен успешно!");
+      // Перенаправляем пользователя на dashboard
+      router.push("/dashboard");
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err.message || "Произошла ошибка");
+      } else {
+        setError("Произошла ошибка");
+      }
+    }
   };
 
   return (
@@ -53,7 +85,6 @@ export default function LoginPage() {
           className="w-full p-3 bg-white/10 text-white rounded-lg placeholder-white/50 backdrop-blur-md"
         />
 
-        {/* Кнопка логина */}
         <Button
           type="submit"
           className="w-full max-w-md mt-6 bg-white text-black rounded-full hover:bg-gray-300"
@@ -79,5 +110,3 @@ export default function LoginPage() {
     </div>
   );
 }
-
-

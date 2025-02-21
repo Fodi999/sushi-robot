@@ -16,7 +16,7 @@ export default function RegisterPage() {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
-  // Обработчик изменения полей формы с аннотацией типа события
+  // Обработчик изменения полей формы
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -25,21 +25,23 @@ export default function RegisterPage() {
     }));
   };
 
-  // Обработчик отправки формы с аннотацией типа события
+  // Обработчик отправки формы
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
     setError(null);
 
     try {
-      // Отправка данных на бэкенд
-      const response = await fetch("https://fish-botai-ye1g.shuttle.app/register", {
+      // Отправка данных на backend, развернутый в Cloud Run
+      const response = await fetch("https://go-robot-670748333372.us-central1.run.app/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
           username: formData.username,
+          email: formData.email,
+          password: formData.password,
         }),
       });
 
@@ -59,7 +61,7 @@ export default function RegisterPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }; // <--- закрывающая фигурная скобка для handleSubmit
 
   return (
     <div className="min-h-screen flex flex-col justify-center items-center bg-gradient-to-b from-black to-gray-900 text-white px-6">
@@ -103,12 +105,10 @@ export default function RegisterPage() {
           required
         />
 
-        {/* Отображение ошибки */}
         {error && (
           <p className="text-red-500 text-sm text-center">{error}</p>
         )}
 
-        {/* Кнопка регистрации */}
         <Button
           type="submit"
           disabled={loading}
@@ -120,15 +120,9 @@ export default function RegisterPage() {
         </Button>
       </form>
 
-      {/* Ссылка для возврата */}
       <Link href="/" className="mt-4 text-white/50 text-sm hover:underline">
         Back to home
       </Link>
     </div>
   );
 }
-
-
-
-
-
