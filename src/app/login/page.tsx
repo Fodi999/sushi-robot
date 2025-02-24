@@ -19,7 +19,7 @@ export default function LoginPage() {
     setSuccess("");
 
     try {
-    
+      // Отправляем данные на локальный backend (/login)
       const response = await fetch("https://go-robot-670748333372.us-central1.run.app/login", {
         method: "POST",
         headers: {
@@ -44,7 +44,7 @@ export default function LoginPage() {
 
       setSuccess("Вход выполнен успешно!");
       // Перенаправляем пользователя на dashboard
-      router.push("/dashboard");
+      router.push(`/user/${data.id}`);
     } catch (err: unknown) {
       if (err instanceof Error) {
         setError(err.message || "Произошла ошибка");

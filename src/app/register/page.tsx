@@ -12,6 +12,7 @@ export default function RegisterPage() {
     username: "",
     email: "",
     password: "",
+    phone: "",
   });
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -32,7 +33,7 @@ export default function RegisterPage() {
     setError(null);
 
     try {
-      // Отправка данных на backend, развернутый в Cloud Run
+      // Отправка данных на локальный backend (используем http://localhost:8080)
       const response = await fetch("https://go-robot-670748333372.us-central1.run.app/register", {
         method: "POST",
         headers: {
@@ -42,26 +43,28 @@ export default function RegisterPage() {
           username: formData.username,
           email: formData.email,
           password: formData.password,
+          phone: formData.phone,
         }),
       });
 
       if (!response.ok) {
-        throw new Error("Registration failed");
+        throw new Error("Регистрация не удалась");
       }
 
       const data = await response.json();
-      console.log("Registered successfully:", data);
-      router.push("/dashboard");
-    } catch (err: unknown) {
-      if (err instanceof Error) {
-        setError(err.message || "Something went wrong");
-      } else {
-        setError("Something went wrong");
+      console.log("Регистрация прошла успешно:", data);
+      router.push(`/user/${data.id}`);
+      } catch (err: unknown) {
+        if (err instanceof Error) {
+          setError(err.message || "Что-то пошло не так");
+        } else {
+          setError("Что-то пошло не так");
+        }
+      } finally {
+        setLoading(false);
       }
-    } finally {
-      setLoading(false);
-    }
-  }; // <--- закрывающая фигурная скобка для handleSubmit
+      }; // Закрывающая фигурная скобка для handleSubmit
+      
 
   return (
     <div className="min-h-screen flex flex-col justify-center items-center bg-gradient-to-b from-black to-gray-900 text-white px-6">
@@ -72,8 +75,8 @@ export default function RegisterPage() {
       </div>
 
       {/* Заголовок */}
-      <h1 className="text-4xl font-bold text-center">Create your account</h1>
-      <p className="text-white/70 text-sm mt-2">Start your journey with us</p>
+      <h1 className="text-4xl font-bold text-center">Создайте свою учетную запись</h1>
+      <p className="text-white/70 text-sm mt-2">Начните своё путешествие вместе с нами</p>
 
       {/* Форма регистрации */}
       <form onSubmit={handleSubmit} className="w-full max-w-md mt-8 space-y-4">
@@ -82,7 +85,7 @@ export default function RegisterPage() {
           name="username"
           value={formData.username}
           onChange={handleInputChange}
-          placeholder="Full Name"
+          placeholder="текст" // Заглушка для поля "Имя"
           className="w-full p-3 bg-white/10 text-white rounded-lg placeholder-white/50 backdrop-blur-md"
           required
         />
@@ -91,7 +94,7 @@ export default function RegisterPage() {
           name="email"
           value={formData.email}
           onChange={handleInputChange}
-          placeholder="Email"
+          placeholder="Электронная почта"
           className="w-full p-3 bg-white/10 text-white rounded-lg placeholder-white/50 backdrop-blur-md"
           required
         />
@@ -100,7 +103,16 @@ export default function RegisterPage() {
           name="password"
           value={formData.password}
           onChange={handleInputChange}
-          placeholder="Password"
+          placeholder="Создай пароль" // Заглушка для поля "Пароль"
+          className="w-full p-3 bg-white/10 text-white rounded-lg placeholder-white/50 backdrop-blur-md"
+          required
+        />
+        <Input
+          type="tel"
+          name="phone"
+          value={formData.phone}
+          onChange={handleInputChange}
+          placeholder="Номер телефона"
           className="w-full p-3 bg-white/10 text-white rounded-lg placeholder-white/50 backdrop-blur-md"
           required
         />
@@ -116,13 +128,16 @@ export default function RegisterPage() {
             loading ? "opacity-50 cursor-not-allowed" : ""
           }`}
         >
-          {loading ? "Registering..." : "Register"}
+          {loading ? "Регистрация..." : "Зарегистрироваться"}
         </Button>
       </form>
 
       <Link href="/" className="mt-4 text-white/50 text-sm hover:underline">
-        Back to home
+        Назад на главную
       </Link>
     </div>
   );
 }
+
+
+
