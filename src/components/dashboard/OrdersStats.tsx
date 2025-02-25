@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { BarChart2 } from "lucide-react"; // Импортируем иконки
+import { BarChart2 } from "lucide-react";
 
 export default function OrdersStats() {
   const orderHistory = [
@@ -12,44 +12,61 @@ export default function OrdersStats() {
   const totalCaloriesMonth = totalCaloriesDay * 30;
 
   return (
-    <Card className="bg-gray-800 border-0 rounded-xl shadow-lg">
-      <CardHeader className="border-b border-gray-700 pb-4 flex justify-between items-center">
-        <div className="flex items-center space-x-2">
-          <BarChart2 className="text-gray-400 w-5 h-5" /> {/* Уменьшенный размер иконки */}
-          <CardTitle className="text-xl sm:text-2xl font-semibold text-white">Заказы и калории</CardTitle>
+    <Card className="w-full max-w-[1000px] mx-auto bg-gradient-to-br from-gray-900 to-black text-gray-100 rounded-2xl shadow-lg overflow-hidden border border-gray-800 transition-all hover:shadow-xl">
+      <CardHeader className="p-4 border-b border-gray-800 flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <BarChart2 className="w-5 h-5 text-gray-300" />
+          <CardTitle className="text-xl font-semibold bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
+            Заказы
+          </CardTitle>
         </div>
-        <div className="bg-yellow-500 text-black text-xs py-1 px-2 rounded-full">
-          Unpaid {/* Яркая метка */}
-        </div>
+        <span className="bg-gray-700 text-gray-200 text-xs font-medium px-2 py-1 rounded-full">
+          Unpaid
+        </span>
       </CardHeader>
-      <CardContent className="space-y-4 p-6 sm:p-8">
-        <p className="text-sm sm:text-base text-gray-300">История заказов:</p>
+      <CardContent className="p-5 space-y-5">
+        <p className="text-sm text-gray-300">История заказов:</p>
         {orderHistory.length === 0 ? (
-          <p className="text-sm sm:text-base text-gray-400">Заказы отсутствуют</p>
+          <p className="text-sm text-gray-400 italic px-4 py-2 bg-gray-800/50 rounded-xl">
+            Заказов пока нет
+          </p>
         ) : (
-          orderHistory.map((order, idx) => (
-            <div key={idx} className="bg-gray-700 p-4 rounded-lg shadow-sm hover:bg-gray-600 transition-colors">
-              <p className="text-sm sm:text-base text-white">
-                <strong>Дата:</strong> {order.date}
-              </p>
-              <p className="text-sm sm:text-base text-white">
-                <strong>Калории:</strong> {order.calories}
-              </p>
-            </div>
-          ))
+          <div className="space-y-3">
+            {orderHistory.map((order, idx) => (
+              <div
+                key={idx}
+                className="bg-gray-800/50 p-3 rounded-xl hover:bg-gray-800 transition-colors"
+              >
+                <p className="text-sm text-gray-200">
+                  <span className="font-medium">Дата:</span> {order.date}
+                </p>
+                <p className="text-sm text-gray-200">
+                  <span className="font-medium">Калории:</span> {order.calories}
+                </p>
+              </div>
+            ))}
+          </div>
         )}
-        <div className="mt-6 space-y-2 text-sm sm:text-base text-gray-300">
-          <p><strong>Сводка калорий:</strong></p>
-          <p>За день: <span className="font-semibold">{totalCaloriesDay}</span></p>
-          <p>За неделю: <span className="font-semibold">{totalCaloriesWeek}</span></p>
-          <p>За месяц: <span className="font-semibold">{totalCaloriesMonth}</span></p>
+        <div className="space-y-1 text-sm text-gray-300">
+          <p className="font-medium">Сводка калорий:</p>
+          <p>
+            День: <span className="font-semibold text-white">{totalCaloriesDay}</span>
+          </p>
+          <p>
+            Неделя: <span className="font-semibold text-white">{totalCaloriesWeek}</span>
+          </p>
+          <p>
+            Месяц: <span className="font-semibold text-white">{totalCaloriesMonth}</span>
+          </p>
+        </div>
+        <div className="flex justify-end pt-4">
+          <button
+            className="bg-gradient-to-r from-gray-700 to-gray-600 hover:from-gray-600 hover:to-gray-500 text-white font-medium rounded-xl px-4 py-2 transition-all shadow-md hover:shadow-lg"
+          >
+            Оплатить сейчас
+          </button>
         </div>
       </CardContent>
-      <div className="mt-6 space-y-2 text-sm sm:text-base text-gray-300 flex justify-end p-6 sm:p-8">
-        <button className="bg-yellow-500 text-black px-4 py-2 rounded-full hover:bg-yellow-400 transition-colors">
-          Pay out now {/* Кнопка с ярким желтым цветом */}
-        </button>
-      </div>
     </Card>
   );
 }

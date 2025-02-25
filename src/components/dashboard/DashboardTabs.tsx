@@ -1,5 +1,6 @@
+"use client";
+
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Button } from "@/components/ui/button";
 import RecommendedProducts from "@/components/dashboard/RecommendedProducts";
 import ProfileSettings from "@/components/dashboard/ProfileSettings";
 import Preferences from "@/components/dashboard/Preferences";
@@ -10,7 +11,17 @@ import OrderStatus from "@/components/dashboard/OrderStatus";
 import Support from "@/components/dashboard/Support";
 import Social from "@/components/dashboard/Social";
 import { Guest, AutomationCardProps } from "../types";
-import { Home, User, Settings, ShoppingCart, Box, CreditCard, Truck, HelpCircle, Share2 } from "lucide-react"; // Импортируем иконки
+import {
+  Home,
+  User,
+  Settings,
+  ShoppingCart,
+  Box,
+  CreditCard,
+  Truck,
+  HelpCircle,
+  Share2,
+} from "lucide-react";
 
 interface DashboardTabsProps {
   guest: Guest;
@@ -18,6 +29,7 @@ interface DashboardTabsProps {
   selectedCategory: AutomationCardProps["category"];
   setSelectedCategory: (category: AutomationCardProps["category"]) => void;
   cartItems: AutomationCardProps[];
+  setCartItems: (items: AutomationCardProps[]) => void;
   addToCart: (item: AutomationCardProps) => void;
   removeFromCart: (index: number) => void;
 }
@@ -28,41 +40,55 @@ export default function DashboardTabs({
   selectedCategory,
   setSelectedCategory,
   cartItems,
+  setCartItems,
   addToCart,
   removeFromCart,
 }: DashboardTabsProps) {
-  const categories: AutomationCardProps["category"][] = ["суши", "роллы", "сашими", "салаты", "закуски"];
+  const categories: AutomationCardProps["category"][] = [
+    "суши",
+    "роллы",
+    "сашими",
+    "салаты",
+    "закуски",
+  ];
+
+  const tabs = [
+    { id: "home", label: "Главная", icon: Home },
+    { id: "profile", label: "Профиль", icon: User },
+    { id: "preferences", label: "Настройки", icon: Settings },
+    {
+      id: "cart",
+      label: (
+        <span className="flex items-center gap-2">
+          Корзина
+          {cartItems.length > 0 && (
+            <span className="inline-flex items-center justify-center w-5 h-5 text-xs font-semibold text-white bg-red-500 rounded-full">
+              {cartItems.length}
+            </span>
+          )}
+        </span>
+      ),
+      icon: ShoppingCart,
+    },
+    { id: "ordersStats", label: "Заказы", icon: Box },
+    { id: "bonuses", label: "Бонусы", icon: CreditCard },
+    { id: "orderStatus", label: "Статус", icon: Truck },
+    { id: "support", label: "Поддержка", icon: HelpCircle },
+    { id: "social", label: "Соцсети", icon: Share2 },
+  ];
 
   return (
-    <Tabs defaultValue="home" className="space-y-6">
-      <div className="overflow-x-auto">
-        <TabsList className="flex space-x-2 min-w-max border-b border-gray-950">
-          {["home", "profile", "preferences", "cart", "ordersStats", "bonuses", "orderStatus", "support", "social"].map((tab) => (
+    <Tabs defaultValue="home" className="space-y-8">
+      <div className="overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-gray-900">
+        <TabsList className="flex gap-2 bg-transparent border-b border-gray-800 p-0">
+          {tabs.map(({ id, label, icon: Icon }) => (
             <TabsTrigger
-              key={tab}
-              value={tab}
-              className="px-3 py-1 rounded-md transition-colors duration-200 hover:bg-indigo-100 focus:ring-2 focus:ring-indigo-500 data-[state=active]:bg-indigo-600 data-[state=active]:text-white"
+              key={id}
+              value={id}
+              className="flex items-center gap-2 px-4 py-1 rounded-full text-sm font-medium text-gray-300 transition-all hover:bg-gray-800 hover:text-white data-[state=active]:bg-gradient-to-r data-[state=active]:from-gray-700 data-[state=active]:to-gray-600 data-[state=active]:text-white data-[state=active]:shadow-md"
             >
-              {/* Иконки и текст вкладок */}
-              {tab === "home" ? <Home className="mr-2 w-5 h-5" /> : null}
-              {tab === "profile" ? <User className="mr-2 w-5 h-5" /> : null}
-              {tab === "preferences" ? <Settings className="mr-2 w-5 h-5" /> : null}
-              {tab === "cart" ? <ShoppingCart className="mr-2 w-5 h-5" /> : null}
-              {tab === "ordersStats" ? <Box className="mr-2 w-5 h-5" /> : null}
-              {tab === "bonuses" ? <CreditCard className="mr-2 w-5 h-5" /> : null}
-              {tab === "orderStatus" ? <Truck className="mr-2 w-5 h-5" /> : null}
-              {tab === "support" ? <HelpCircle className="mr-2 w-5 h-5" /> : null}
-              {tab === "social" ? <Share2 className="mr-2 w-5 h-5" /> : null}
-
-              {/* Названия вкладок */}
-              {tab === "home" ? "Главная" :
-               tab === "profile" ? "Профиль" :
-               tab === "preferences" ? "Предпочтения" :
-               tab === "cart" ? "Корзина" :
-               tab === "ordersStats" ? "Заказы и калории" :
-               tab === "bonuses" ? "Бонусы" :
-               tab === "orderStatus" ? "Статус заказа" :
-               tab === "support" ? "Поддержка" : "Соцсети"}
+              <Icon className="w-4 h-4" />
+              {label}
             </TabsTrigger>
           ))}
         </TabsList>
@@ -84,7 +110,12 @@ export default function DashboardTabs({
         <Preferences />
       </TabsContent>
       <TabsContent value="cart" className="space-y-6">
-        <Cart cartItems={cartItems} removeFromCart={removeFromCart} />
+        <Cart
+          guest={guest}
+          cartItems={cartItems}
+          removeFromCart={removeFromCart}
+          setCartItems={setCartItems}
+        />
       </TabsContent>
       <TabsContent value="ordersStats" className="space-y-6">
         <OrdersStats />
@@ -96,16 +127,19 @@ export default function DashboardTabs({
         <OrderStatus />
       </TabsContent>
       <TabsContent value="support" className="space-y-6">
-        <Support />
+        <Support guest={guest} />
       </TabsContent>
       <TabsContent value="social" className="space-y-6">
         <Social />
       </TabsContent>
-      <Button variant="secondary" className="w-full mt-4 text-xs sm:text-sm">
-        + Новый чат
-      </Button>
     </Tabs>
   );
 }
+
+
+
+
+
+
 
 

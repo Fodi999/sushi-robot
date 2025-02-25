@@ -4,68 +4,72 @@ import { Input } from "@/components/ui/input";
 
 export default function Preferences() {
   return (
-    <Card className="bg-gray-800 border-0 rounded-xl shadow-lg hover:shadow-2xl transition-shadow duration-300">
-      <CardHeader className="border-b border-gray-700 pb-4">
-        <CardTitle className="text-xl sm:text-2xl font-semibold text-white">Предпочтения</CardTitle>
+    <Card className="w-full max-w-[1000px] mx-auto bg-gradient-to-br from-gray-900 to-black text-gray-100 rounded-2xl shadow-lg overflow-hidden border border-gray-800 transition-all hover:shadow-xl">
+      <CardHeader className="p-4 border-b border-gray-800">
+        <CardTitle className="text-xl font-semibold bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
+          Предпочтения
+        </CardTitle>
       </CardHeader>
-      <CardContent className="space-y-6 p-6 sm:p-8">
+      <CardContent className="p-5 space-y-5">
         {/* Диета */}
-        <div className="space-y-2">
-          <label className="text-sm sm:text-base text-gray-300">Диета</label>
+        <div className="space-y-1">
+          <label className="text-sm text-gray-300">Диета</label>
           <Input
-            placeholder="Введите вашу диету"
-            className="bg-gray-700 text-white border-0 rounded-md p-3 text-sm sm:text-base focus:ring-2 focus:ring-yellow-500 focus:outline-none"
+            placeholder="Ваша диета"
+            className="bg-gray-800 text-white border-gray-700 rounded-xl px-4 py-2 text-sm focus:ring-2 focus:ring-gray-500 focus:border-transparent transition-all"
           />
         </div>
-        
+
         {/* Любимые ингредиенты */}
-        <div className="space-y-2">
-          <label className="text-sm sm:text-base text-gray-300">Любимые ингредиенты</label>
+        <div className="space-y-1">
+          <label className="text-sm text-gray-300">Любимые ингредиенты</label>
           <Input
-            placeholder="Например: базилик, помидоры"
-            className="bg-gray-700 text-white border-0 rounded-md p-3 text-sm sm:text-base focus:ring-2 focus:ring-yellow-500 focus:outline-none"
+            placeholder="Базилик, помидоры..."
+            className="bg-gray-800 text-white border-gray-700 rounded-xl px-4 py-2 text-sm focus:ring-2 focus:ring-gray-500 focus:border-transparent transition-all"
           />
         </div>
-        
+
         {/* Исключения */}
-        <div className="space-y-2">
-          <label className="text-sm sm:text-base text-gray-300">Исключения</label>
+        <div className="space-y-1">
+          <label className="text-sm text-gray-300">Исключения</label>
           <Input
-            placeholder="Например: орехи, морепродукты"
-            className="bg-gray-700 text-white border-0 rounded-md p-3 text-sm sm:text-base focus:ring-2 focus:ring-yellow-500 focus:outline-none"
+            placeholder="Орехи, морепродукты..."
+            className="bg-gray-800 text-white border-gray-700 rounded-xl px-4 py-2 text-sm focus:ring-2 focus:ring-gray-500 focus:border-transparent transition-all"
           />
         </div>
-        
-        {/* Предпочтения по времени приема пищи */}
-        <div className="space-y-2">
-          <label className="text-sm sm:text-base text-gray-300">Предпочтения по времени приема пищи</label>
+
+        {/* Время приема пищи */}
+        <div className="space-y-1">
+          <label className="text-sm text-gray-300">Время приема пищи</label>
           <Input
-            placeholder="Например: завтрак, обед, ужин"
-            className="bg-gray-700 text-white border-0 rounded-md p-3 text-sm sm:text-base focus:ring-2 focus:ring-yellow-500 focus:outline-none"
+            placeholder="Завтрак, ужин..."
+            className="bg-gray-800 text-white border-gray-700 rounded-xl px-4 py-2 text-sm focus:ring-2 focus:ring-gray-500 focus:border-transparent transition-all"
           />
         </div>
-        
+
         {/* Аллергии */}
-        <div className="space-y-2">
-          <label className="text-sm sm:text-base text-gray-300">Аллергии</label>
+        <div className="space-y-1">
+          <label className="text-sm text-gray-300">Аллергии</label>
           <Input
-            placeholder="Например: молоко, глютен"
-            className="bg-gray-700 text-white border-0 rounded-md p-3 text-sm sm:text-base focus:ring-2 focus:ring-yellow-500 focus:outline-none"
+            placeholder="Молоко, глютен..."
+            className="bg-gray-800 text-white border-gray-700 rounded-xl px-4 py-2 text-sm focus:ring-2 focus:ring-gray-500 focus:border-transparent transition-all"
           />
         </div>
-        
-        {/* Предпочтения по специям */}
-        <div className="space-y-2">
-          <label className="text-sm sm:text-base text-gray-300">Предпочтения по специям</label>
+
+        {/* Специи */}
+        <div className="space-y-1">
+          <label className="text-sm text-gray-300">Специи</label>
           <Input
-            placeholder="Например: перец, чеснок"
-            className="bg-gray-700 text-white border-0 rounded-md p-3 text-sm sm:text-base focus:ring-2 focus:ring-yellow-500 focus:outline-none"
+            placeholder="Перец, чеснок..."
+            className="bg-gray-800 text-white border-gray-700 rounded-xl px-4 py-2 text-sm focus:ring-2 focus:ring-gray-500 focus:border-transparent transition-all"
           />
         </div>
-        
+
         {/* Кнопка сохранения */}
-        <Button className="w-full mt-6 text-sm sm:text-base bg-yellow-500 hover:bg-yellow-400 text-black rounded-md py-3 transition-colors duration-200">
-          Сохранить предпочтения
+        <Button
+          className="w-full bg-gradient-to-r from-gray-700 to-gray-600 hover:from-gray-600 hover:to-gray-500 text-white font-medium rounded-xl py-2.5 mt-6 transition-all shadow-md hover:shadow-lg"
+        >
+          Сохранить
         </Button>
       </CardContent>
     </Card>

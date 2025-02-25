@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect, useState } from "react";
 import DashboardHeader from "./dashboard/DashboardHeader";
 import SearchBar from "./dashboard/SearchBar";
@@ -40,7 +42,7 @@ export default function Dashboard({ guest }: { guest: Guest }) {
   };
 
   return (
-    <div className="min-h-screen bg-[#1c2127] text-white p-4 space-y-6">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 to-black text-gray-100 p-6 space-y-8">
       <DashboardHeader guest={guest} greeting={greeting} />
       <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
       <DashboardTabs
@@ -49,6 +51,7 @@ export default function Dashboard({ guest }: { guest: Guest }) {
         selectedCategory={selectedCategory}
         setSelectedCategory={setSelectedCategory}
         cartItems={cartItems}
+        setCartItems={setCartItems} // Добавлен пропс setCartItems
         addToCart={addToCart}
         removeFromCart={removeFromCart}
       />
