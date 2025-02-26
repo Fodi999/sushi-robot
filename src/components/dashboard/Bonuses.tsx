@@ -1,28 +1,29 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Lightbulb, Edit, Settings } from "lucide-react"; // Иконки Lucide
+import { Lightbulb, Edit, Settings } from "lucide-react";
 
 export default function Bonuses() {
   return (
-    <Card className="bg-gradient-to-br from-gray-900 to-gray-800 border-none shadow-xl hover:shadow-2xl transition-all duration-300 rounded-xl overflow-hidden max-w-md mx-auto">
-      <CardHeader className="pb-2">
-        <CardTitle className="text-xl sm:text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-gray-200 to-gray-400 tracking-tight">
-          Бонусная программа
+    <Card className="w-full max-w-[1000px] mx-auto bg-gradient-to-br from-gray-900 to-black text-gray-100 rounded-2xl shadow-lg overflow-hidden border border-gray-800 transition-all hover:shadow-xl">
+      <CardHeader className="p-4 border-b border-gray-800">
+        <CardTitle className="text-xl font-semibold bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
+          Бонусы
         </CardTitle>
       </CardHeader>
-      <CardContent className="space-y-4 p-6">
-        <p className="text-sm sm:text-base text-gray-300 flex items-center">
-          <Lightbulb className="mr-2 text-green-400" /> {/* Иконка для первого пункта */}
-          <span className="font-semibold text-white mr-2">Ваши бонусные баллы:</span>
-          <strong className="text-lg sm:text-xl text-yellow-400">1234</strong>
-        </p>
-        <p className="text-sm sm:text-base text-gray-400 leading-relaxed flex items-center">
-          <Edit className="mr-2 text-blue-400" /> {/* Иконка для второго пункта */}
-          Доступные скидки и промокоды для ваших покупок.
-        </p>
-        <p className="text-sm sm:text-base text-gray-400 leading-relaxed flex items-center">
-          <Settings className="mr-2 text-red-400" /> {/* Иконка для третьего пункта */}
-          Управление бонусной программой.
-        </p>
+      <CardContent className="p-5 space-y-5">
+        <div className="flex items-center gap-3">
+          <Lightbulb className="h-5 w-5 text-gray-300" />
+          <p className="text-sm text-gray-300">
+            Баллы: <span className="font-semibold text-lg text-white">1234</span>
+          </p>
+        </div>
+        <div className="flex items-center gap-3">
+          <Edit className="h-5 w-5 text-gray-300" />
+          <p className="text-sm text-gray-400">Скидки и промокоды для покупок</p>
+        </div>
+        <div className="flex items-center gap-3">
+          <Settings className="h-5 w-5 text-gray-300" />
+          <p className="text-sm text-gray-400">Управление программой</p>
+        </div>
       </CardContent>
     </Card>
   );

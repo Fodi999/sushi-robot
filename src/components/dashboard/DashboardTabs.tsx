@@ -59,10 +59,10 @@ export default function DashboardTabs({
     {
       id: "cart",
       label: (
-        <span className="flex items-center gap-2">
+        <span className="flex items-center gap-1">
           Корзина
           {cartItems.length > 0 && (
-            <span className="inline-flex items-center justify-center w-5 h-5 text-xs font-semibold text-white bg-red-500 rounded-full">
+            <span className="inline-flex items-center justify-center w-4 h-4 text-[0.65rem] font-semibold text-white bg-red-500 rounded-full">
               {cartItems.length}
             </span>
           )}
@@ -78,23 +78,23 @@ export default function DashboardTabs({
   ];
 
   return (
-    <Tabs defaultValue="home" className="space-y-8">
+    <Tabs defaultValue="home" className="space-y-6">
       <div className="overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-gray-900">
-        <TabsList className="flex gap-2 bg-transparent border-b border-gray-800 p-0">
+        <TabsList className="flex items-center justify-start gap-1 bg-transparent border-b border-gray-800 p-2 min-w-[700px] sm:min-w-0">
           {tabs.map(({ id, label, icon: Icon }) => (
             <TabsTrigger
               key={id}
               value={id}
-              className="flex items-center gap-2 px-4 py-1 rounded-full text-sm font-medium text-gray-300 transition-all hover:bg-gray-800 hover:text-white data-[state=active]:bg-gradient-to-r data-[state=active]:from-gray-700 data-[state=active]:to-gray-600 data-[state=active]:text-white data-[state=active]:shadow-md"
+              className="flex items-center gap-1 px-2 py-1 rounded-full text-[0.75rem] sm:text-[0.8rem] font-medium text-gray-300 transition-all hover:bg-gray-800 hover:text-white data-[state=active]:bg-gradient-to-r data-[state=active]:from-gray-700 data-[state=active]:to-gray-600 data-[state=active]:text-white data-[state=active]:shadow-md whitespace-nowrap"
             >
-              <Icon className="w-4 h-4" />
+              <Icon className="w-3 h-3 sm:w-4 sm:h-4" />
               {label}
             </TabsTrigger>
           ))}
         </TabsList>
       </div>
 
-      <TabsContent value="home" className="space-y-6">
+      <TabsContent value="home" className="space-y-4">
         <RecommendedProducts
           filteredProducts={filteredProducts}
           selectedCategory={selectedCategory}
@@ -103,13 +103,13 @@ export default function DashboardTabs({
           categories={categories}
         />
       </TabsContent>
-      <TabsContent value="profile" className="space-y-6">
+      <TabsContent value="profile" className="space-y-4">
         <ProfileSettings guest={guest} />
       </TabsContent>
-      <TabsContent value="preferences" className="space-y-6">
+      <TabsContent value="preferences" className="space-y-4">
         <Preferences />
       </TabsContent>
-      <TabsContent value="cart" className="space-y-6">
+      <TabsContent value="cart" className="space-y-4">
         <Cart
           guest={guest}
           cartItems={cartItems}
@@ -117,19 +117,19 @@ export default function DashboardTabs({
           setCartItems={setCartItems}
         />
       </TabsContent>
-      <TabsContent value="ordersStats" className="space-y-6">
+      <TabsContent value="ordersStats" className="space-y-4">
         <OrdersStats />
       </TabsContent>
-      <TabsContent value="bonuses" className="space-y-6">
+      <TabsContent value="bonuses" className="space-y-4">
         <Bonuses />
       </TabsContent>
-      <TabsContent value="orderStatus" className="space-y-6">
+      <TabsContent value="orderStatus" className="space-y-4">
         <OrderStatus />
       </TabsContent>
-      <TabsContent value="support" className="space-y-6">
+      <TabsContent value="support" className="space-y-4">
         <Support guest={guest} />
       </TabsContent>
-      <TabsContent value="social" className="space-y-6">
+      <TabsContent value="social" className="space-y-4">
         <Social />
       </TabsContent>
     </Tabs>

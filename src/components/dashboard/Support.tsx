@@ -44,8 +44,9 @@ export default function Support({ guest }: SupportProps) {
   const clientId = clientIdRef.current;
   const chatId = "support_chat";
   const username = guest.username;
-  const wsUrl = `wss://go-robot-670748333372.us-central1.run.app/ws?client_id=${clientId}&chat_id=${chatId}&username=${encodeURIComponent(username)}`;
-
+  const wsUrl = `wss://go-robot-670748333372.us-central1.run.app/ws?client_id=${clientId}&chat_id=${chatId}&username=${encodeURIComponent(
+    username
+  )}`;
 
   useEffect(() => {
     if (isChatOpen && !ws) {
@@ -113,8 +114,10 @@ export default function Support({ guest }: SupportProps) {
   return (
     <TooltipProvider>
       <div
-        className={`fixed bottom-6 z-50 ${
-          isChatOpen ? "left-0 right-0 flex justify-center" : "left-1/2 transform -translate-x-1/2"
+        className={`fixed bottom-4 z-50 ${
+          isChatOpen
+            ? "inset-x-2 md:left-0 md:right-0 md:flex md:justify-center"
+            : "left-1/2 transform -translate-x-1/2"
         }`}
       >
         <AnimatePresence>
@@ -125,26 +128,26 @@ export default function Support({ guest }: SupportProps) {
             exit="exit"
           >
             <Card
-              className={`bg-gradient-to-br from-gray-900 to-black border border-gray-800 rounded-2xl shadow-lg transition-all hover:shadow-xl ${
-                isChatOpen ? "w-full sm:w-[1000px] h-[80vh]" : "w-[340px] sm:w-80"
+              className={`bg-gradient-to-br from-gray-900 to-black border border-gray-800 rounded-2xl shadow-lg transition-all hover:shadow-xl w-full ${
+                isChatOpen ? "h-[85vh] md:w-[1000px] md:h-[80vh]" : "w-[280px] sm:w-80"
               }`}
             >
-              <CardContent className="p-5 flex flex-col h-full text-gray-100">
+              <CardContent className="p-3 md:p-5 flex flex-col h-full text-gray-100">
                 {!isChatOpen ? (
                   <motion.div
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
-                    className="flex flex-col items-center justify-center h-full space-y-4"
+                    className="flex flex-col items-center justify-center h-full space-y-3"
                   >
-                    <MessageCircle className="h-12 w-12 text-gray-300 transition-colors hover:text-gray-100" />
-                    <h3 className="text-xl font-semibold bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
+                    <MessageCircle className="h-10 w-10 md:h-12 md:w-12 text-gray-300 transition-colors hover:text-gray-100" />
+                    <h3 className="text-lg md:text-xl font-semibold bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
                       Поддержка
                     </h3>
-                    <p className="text-sm text-gray-400">Мы готовы помочь</p>
+                    <p className="text-xs md:text-sm text-gray-400">Мы готовы помочь</p>
                     <Button
                       onClick={() => setIsChatOpen(true)}
-                      className="w-full bg-gradient-to-r from-gray-700 to-gray-600 hover:from-gray-600 hover:to-gray-500 text-white font-medium rounded-xl py-2 transition-all shadow-md hover:shadow-lg"
+                      className="w-full bg-gradient-to-r from-gray-700 to-gray-600 hover:from-gray-600 hover:to-gray-500 text-white font-medium rounded-xl py-1.5 md:py-2 text-sm md:text-base transition-all shadow-md hover:shadow-lg"
                     >
                       Начать чат
                     </Button>
@@ -156,8 +159,8 @@ export default function Support({ guest }: SupportProps) {
                     exit={{ opacity: 0 }}
                     className="flex flex-col h-full"
                   >
-                    <div className="flex justify-between items-center border-b border-gray-800 pb-3 mb-4">
-                      <h3 className="text-lg font-semibold bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
+                    <div className="flex justify-between items-center border-b border-gray-800 pb-2 mb-3">
+                      <h3 className="text-base md:text-lg font-semibold bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
                         Чат поддержки
                       </h3>
                       <Button
@@ -166,10 +169,10 @@ export default function Support({ guest }: SupportProps) {
                         onClick={handleCloseChat}
                         className="text-gray-400 hover:text-white transition-colors"
                       >
-                        <X className="h-4 w-4" />
+                        <X className="h-3 w-3 md:h-4 md:w-4" />
                       </Button>
                     </div>
-                    <div className="flex-1 overflow-y-auto space-y-3 pr-2 scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-gray-900">
+                    <div className="flex-1 overflow-y-auto space-y-2 md:space-y-3 pr-1 md:pr-2 scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-gray-900">
                       {messages.map((message, index) => (
                         <motion.div
                           key={`${message.timestamp}-${index}`}
@@ -179,33 +182,33 @@ export default function Support({ guest }: SupportProps) {
                           className={`flex ${message.sender === clientId ? "justify-end" : "justify-start"}`}
                         >
                           <div
-                            className={`max-w-[70%] p-3 rounded-xl shadow-md ${
+                            className={`max-w-[75%] p-2 md:p-3 rounded-xl shadow-md ${
                               message.sender === clientId
                                 ? "bg-gray-700 text-white"
                                 : "bg-gray-800 text-gray-100"
                             }`}
                           >
-                            <p className="text-xs font-medium text-gray-300 mb-1">
+                            <p className="text-[0.7rem] md:text-xs font-medium text-gray-300 mb-1">
                               {message.sender === clientId ? "Вы" : message.sender}
                             </p>
-                            <p className="text-sm mb-2">{message.text}</p>
+                            <p className="text-xs md:text-sm mb-1 md:mb-2">{message.text}</p>
                             <div className="flex justify-between items-end">
-                              <span className="text-[0.6rem] text-gray-400">
+                              <span className="text-[0.55rem] md:text-[0.6rem] text-gray-400">
                                 {formatTimestamp(message.timestamp)}
                               </span>
                               {message.sender === clientId && (
-                                <span className="ml-2">
+                                <span className="ml-1 md:ml-2">
                                   {message.read ? (
                                     <Tooltip>
                                       <TooltipTrigger>
-                                        <CheckCheck className="h-3 w-3 text-gray-300" />
+                                        <CheckCheck className="h-2.5 w-2.5 md:h-3 md:w-3 text-gray-300" />
                                       </TooltipTrigger>
                                       <TooltipContent>Прочитано</TooltipContent>
                                     </Tooltip>
                                   ) : (
                                     <Tooltip>
                                       <TooltipTrigger>
-                                        <Check className="h-3 w-3 text-gray-400" />
+                                        <Check className="h-2.5 w-2.5 md:h-3 md:w-3 text-gray-400" />
                                       </TooltipTrigger>
                                       <TooltipContent>Доставлено</TooltipContent>
                                     </Tooltip>
@@ -218,21 +221,21 @@ export default function Support({ guest }: SupportProps) {
                       ))}
                       <div ref={messagesEndRef} />
                     </div>
-                    <div className="flex gap-2 mt-4">
+                    <div className="flex gap-1 md:gap-2 mt-3 md:mt-4">
                       <input
                         type="text"
                         value={inputMessage}
                         onChange={(e) => setInputMessage(e.target.value)}
                         onKeyDown={(e) => e.key === "Enter" && handleSendMessage()}
-                        placeholder="Введите сообщение..."
-                        className="flex-1 bg-gray-800 text-white border-gray-700 rounded-xl px-4 py-2 text-sm focus:ring-2 focus:ring-gray-500 focus:border-transparent transition-all"
+                        placeholder="Сообщение..."
+                        className="flex-1 bg-gray-800 text-white border-gray-700 rounded-xl px-3 py-1.5 md:px-4 md:py-2 text-xs md:text-sm focus:ring-2 focus:ring-gray-500 focus:border-transparent transition-all"
                       />
                       <Button
                         onClick={handleSendMessage}
-                        className="bg-gradient-to-r from-gray-700 to-gray-600 hover:from-gray-600 hover:to-gray-500 text-white font-medium rounded-xl px-4 py-2 transition-all shadow-md hover:shadow-lg"
+                        className="bg-gradient-to-r from-gray-700 to-gray-600 hover:from-gray-600 hover:to-gray-500 text-white font-medium rounded-xl px-3 md:px-4 py-1.5 md:py-2 transition-all shadow-md hover:shadow-lg"
                         disabled={!ws || ws.readyState !== WebSocket.OPEN}
                       >
-                        <Send className="h-4 w-4" />
+                        <Send className="h-3 w-3 md:h-4 md:w-4" />
                       </Button>
                     </div>
                   </motion.div>
