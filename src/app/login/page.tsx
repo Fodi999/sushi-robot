@@ -19,7 +19,7 @@ export default function LoginPage() {
     setSuccess("");
 
     try {
-      const response = await fetch("https://go-robot-670748333372.us-central1.run.app/login", {
+      const response = await fetch("https://remote-marilee-fodifood-7bbeaaf7.koyeb.app/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

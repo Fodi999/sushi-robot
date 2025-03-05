@@ -16,7 +16,7 @@ export default function Dashboard({ guest }: { guest: Guest }) {
   useEffect(() => {
     async function fetchProducts() {
       try {
-        const res = await fetch("https://go-robot-670748333372.us-central1.run.app/products");
+        const res = await fetch("https://remote-marilee-fodifood-7bbeaaf7.koyeb.app//products");
         if (!res.ok) throw new Error("Ошибка получения товаров");
         const data: AutomationCardProps[] = await res.json();
         setProducts(data);

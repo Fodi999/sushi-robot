@@ -19,6 +19,9 @@ interface ServerData {
   messages?: Message[];
   onlineUsers?: number;
   text?: string;
+  update?: string;
+  timestamp?: number;
+  read?: boolean;
 }
 
 interface Guest {
@@ -44,39 +47,65 @@ export default function Support({ guest }: SupportProps) {
   const clientId = clientIdRef.current;
   const chatId = "support_chat";
   const username = guest.username;
-  const wsUrl = `wss://go-robot-670748333372.us-central1.run.app/ws?client_id=${clientId}&chat_id=${chatId}&username=${encodeURIComponent(
-    username
-  )}`;
+  const wsUrl = "wss://remote-marilee-fodifood-7bbeaaf7.koyeb.app/ws?client_id=123&chat_id=456&username=" + encodeURIComponent("user1");
 
   useEffect(() => {
     if (isChatOpen && !ws) {
-      const websocket = new WebSocket(wsUrl);
+      const connectWebSocket = () => {
+        const websocket = new WebSocket(wsUrl);
 
-      websocket.onopen = () => console.log("WebSocket connected");
-      websocket.onmessage = (event) => {
-        try {
-          const data: ServerData = JSON.parse(event.data);
-          if (data.messages && data.onlineUsers) {
-            setMessages(data.messages.map((msg) => ({ ...msg, read: false })));
-          } else if (data.text) {
-            setMessages((prev) => [...prev, { ...data, read: false } as Message]);
+        websocket.onopen = () => {
+          console.log("WebSocket успешно подключен");
+          setWs(websocket);
+        };
+
+        websocket.onmessage = (event) => {
+          try {
+            const data: ServerData = JSON.parse(event.data);
+            if (data.messages && data.onlineUsers !== undefined) {
+              setMessages(data.messages.map((msg) => ({ ...msg, read: msg.read ?? false })));
+            } else if (data.text) {
+              setMessages((prev) => [
+                ...prev,
+                {
+                  chat_id: chatId,
+                  sender: username,
+                  text: data.text || "", // Fix 1: Ensure text is always a string
+                  timestamp: Date.now(),
+                  read: false,
+                } as Message,
+              ]);
+            } else if (data.update === "read" && data.timestamp) {
+              setMessages((prev) =>
+                prev.map((msg) =>
+                  msg.timestamp === data.timestamp ? { ...msg, read: data.read ?? false } : msg
+                )
+              );
+            }
+          } catch (error) {
+            console.error("Ошибка при разборе сообщения:", error);
           }
-        } catch (error) {
-          console.error("Error parsing message", error);
-        }
-      };
-      websocket.onclose = () => {
-        console.log("WebSocket closed");
-        setWs(null);
-      };
-      websocket.onerror = (error) => console.error("WebSocket error:", error);
+        };
 
-      setWs(websocket);
-      return () => {
-        if (websocket.readyState === WebSocket.OPEN) websocket.close();
+        websocket.onclose = (event) => {
+          console.log("WebSocket закрыт:", event.code, event.reason);
+          setWs(null);
+          setTimeout(connectWebSocket, 2000);
+        };
+
+        websocket.onerror = (event) => {
+          console.error("Ошибка WebSocket:", event);
+          websocket.close();
+        };
       };
+
+      connectWebSocket();
     }
-  }, [isChatOpen, ws, wsUrl]);
+
+    return () => {
+      if (ws?.readyState === WebSocket.OPEN) ws.close();
+    };
+  }, [isChatOpen, ws, wsUrl, username]); // Fix 2: Add username to dependencies
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -98,7 +127,7 @@ export default function Support({ guest }: SupportProps) {
   const formatTimestamp = (timestamp: number) =>
     timestamp && !isNaN(timestamp)
       ? new Date(timestamp).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
-      : "Unknown";
+      : "Неизвестно";
 
   const chatVariants = {
     hidden: { opacity: 0, scale: 0.9, y: 20 },
@@ -121,12 +150,7 @@ export default function Support({ guest }: SupportProps) {
         }`}
       >
         <AnimatePresence>
-          <motion.div
-            variants={chatVariants}
-            initial="hidden"
-            animate="visible"
-            exit="exit"
-          >
+          <motion.div variants={chatVariants} initial="hidden" animate="visible" exit="exit">
             <Card
               className={`bg-gradient-to-br from-gray-900 to-black border border-gray-800 rounded-2xl shadow-lg transition-all hover:shadow-xl w-full ${
                 isChatOpen ? "h-[85vh] md:w-[1000px] md:h-[80vh]" : "w-[280px] sm:w-80"

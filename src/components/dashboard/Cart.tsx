@@ -46,7 +46,7 @@ export default function Cart({ cartItems, removeFromCart, guest, setCartItems }:
     };
 
     try {
-      const res = await fetch("https://go-robot-670748333372.us-central1.run.app/orders", {
+      const res = await fetch("https://remote-marilee-fodifood-7bbeaaf7.koyeb.app/orders", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(orderData),

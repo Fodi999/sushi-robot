@@ -31,7 +31,7 @@ export default function RegisterPage() {
     setError(null);
 
     try {
-      const response = await fetch("https://go-robot-670748333372.us-central1.run.app/register", {
+      const response = await fetch("https://remote-marilee-fodifood-7bbeaaf7.koyeb.app/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

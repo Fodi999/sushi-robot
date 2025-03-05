@@ -21,7 +21,7 @@ export default function UserDashboardPage() {
   useEffect(() => {
     async function fetchGuest() {
       try {
-        const res = await fetch(`https://go-robot-670748333372.us-central1.run.app/guest/${id}`);
+        const res = await fetch(`https://remote-marilee-fodifood-7bbeaaf7.koyeb.app/guest/${id}`);
         if (!res.ok) {
           throw new Error("Не удалось загрузить данные пользователя");
         }
@@ -46,6 +46,15 @@ export default function UserDashboardPage() {
 
   return <Dashboard guest={guest} />;
 }
+
+
+
+
+
+
+
+
+
 
 
 
